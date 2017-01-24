@@ -16,11 +16,6 @@
 
 @property (assign, nonatomic) NSInteger pageCount;
 
-@property (assign, nonatomic) NSInteger currentPage;
-
-// default 10.0f, value than 10
-@property (assign, nonatomic) CGFloat gapValue;
-
 @property (weak, nonatomic) UIScrollView *scrollView;
 
 @end

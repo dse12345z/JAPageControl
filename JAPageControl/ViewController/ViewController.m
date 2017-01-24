@@ -32,7 +32,7 @@
 #pragma mark * init values
 
 - (void)setupScrollViews {
-    NSInteger pages = 4;
+    NSInteger pages = 10;
     CGFloat screenWidth = CGRectGetWidth([UIScreen mainScreen].bounds);
     self.scrollView.contentSize = CGSizeMake(pages * screenWidth, 0);
     
@@ -45,19 +45,16 @@
 }
 
 - (void)setupJAPageControls {
-    NSInteger pageCount = 4;
-    CGFloat gapValue = 10.0f;
-    CGFloat height = 10;
-    CGFloat width = (pageCount * height) + ((pageCount - 1) * gapValue);
-    CGFloat x = (CGRectGetWidth([UIScreen mainScreen].bounds) / 2) - (width / 2);
-    CGFloat y = CGRectGetHeight(self.scrollView.bounds) - (height + gapValue);
-    self.jaPageControl = [[JAPageControl alloc] initWithFrame:CGRectMake(x, y, width, height)];
+    NSInteger pageCount = 5;
+    self.jaPageControl = [[JAPageControl alloc] init];
     self.jaPageControl.scrollView = self.scrollView;
     self.jaPageControl.pageCount = pageCount;
-    self.jaPageControl.gapValue = gapValue;
-    self.jaPageControl.currentPage = 0;
 //    self.jaPageControl.selectedColor = [UIColor redColor];
 //    self.jaPageControl.unSelectedColor = [UIColor blueColor];
+    
+    CGFloat x = CGRectGetWidth([UIScreen mainScreen].bounds) * 0.5;
+    CGFloat y = CGRectGetHeight(self.scrollView.bounds) - 20;
+    self.jaPageControl.center = CGPointMake(x, y);
     [self.view addSubview:self.jaPageControl];
 }
 

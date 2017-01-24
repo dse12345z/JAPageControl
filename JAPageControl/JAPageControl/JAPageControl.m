@@ -13,14 +13,17 @@
 @property (strong, nonatomic) UIView *animateCircle;
 @property (strong, nonatomic) NSMutableArray *circles;
 @property (assign, nonatomic) NSInteger startOffset;
-@property (assign, nonatomic) CGFloat circleWidth;
+@property (assign, nonatomic) NSInteger currentPage;
+
+@property (readonly, nonatomic) CGFloat gapValue;
+@property (readonly, nonatomic) CGFloat circleHeight;
+@property (readonly, nonatomic) CGFloat circleWidth;
 
 @end
 
 @implementation JAPageControl
 @synthesize scrollView = _scrollView;
 @synthesize pageCount = _pageCount;
-@synthesize gapValue = _gapValue;
 @synthesize selectedColor = _selectedColor;
 @synthesize unSelectedColor = _unSelectedColor;
 
@@ -42,17 +45,6 @@
 
 - (NSInteger)pageCount {
     return _pageCount;
-}
-
-- (void)setGapValue:(CGFloat)gapValue {
-    _gapValue = gapValue;
-}
-
-- (CGFloat)gapValue {
-    if (_gapValue <= 10.0f) {
-        _gapValue = 10.0f;
-    }
-    return _gapValue;
 }
 
 - (void)setSelectedColor:(UIColor *)selectedColor {
@@ -81,6 +73,20 @@
 
 - (UIColor *)unSelectedColor {
     return _unSelectedColor ? _unSelectedColor : [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.2f];
+}
+
+#pragma mark * readonly
+
+- (CGFloat)gapValue {
+    return 10.0f;
+}
+
+- (CGFloat)circleHeight {
+    return 10.0f;
+}
+
+- (CGFloat)circleWidth {
+    return 10.0f;
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -159,21 +165,28 @@
 }
 
 - (void)setupCircleView {
-    CGFloat height = CGRectGetHeight(self.bounds);
-    self.circleWidth = height;
+    [self setupFrame];
+    
     for (NSInteger index = 0; index < self.pageCount; index++) {
-        CGFloat x = (height * index) + (index * self.gapValue);
-        UIView *circle = [[UIView alloc] initWithFrame:CGRectMake(x, 0, height, height)];
+        CGFloat x = (self.circleHeight * index) + (index * self.gapValue);
+        UIView *circle = [[UIView alloc] initWithFrame:CGRectMake(x, 0, self.circleHeight, self.circleHeight)];
         circle.backgroundColor = self.selectedColor;
-        circle.layer.cornerRadius = height / 2.0f;
+        circle.layer.cornerRadius = self.circleHeight / 2.0f;
         circle.layer.transform = CATransform3DMakeScale(0.9, 0.9, 1.0);
         [self addSubview:circle];
         [self.circles addObject:circle];
     }
-    self.animateCircle = [[UIView alloc] initWithFrame:CGRectMake(0, 0, height, height)];
-    self.animateCircle.layer.cornerRadius = height / 2.0f;
+    self.animateCircle = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.circleHeight, self.circleHeight)];
+    self.animateCircle.layer.cornerRadius = self.circleHeight / 2.0f;
     self.animateCircle.backgroundColor = self.selectedColor;
     [self addSubview:self.animateCircle];
+}
+
+- (void)setupFrame {
+    CGRect newFrame = self.frame;
+    newFrame.size.height = self.circleHeight;
+    newFrame.size.width = (self.pageCount * self.circleHeight) + ((self.pageCount - 1) * self.gapValue);
+    self.frame = newFrame;
 }
 
 #pragma mark * misc
@@ -190,14 +203,6 @@
 
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
-    if (self) {
-        [self setupInitValues];
-    }
-    return self;
-}
-
-- (nullable instancetype)initWithCoder:(NSCoder *)aDecoder {
-    self = [super initWithCoder:aDecoder];
     if (self) {
         [self setupInitValues];
     }
