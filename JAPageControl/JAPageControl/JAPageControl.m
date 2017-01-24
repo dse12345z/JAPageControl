@@ -15,7 +15,7 @@
 @property (assign, nonatomic) NSInteger startOffset;
 @property (assign, nonatomic) NSInteger currentPage;
 
-@property (readonly, nonatomic) CGFloat gapValue;
+@property (readonly, nonatomic) CGFloat gap;
 @property (readonly, nonatomic) CGFloat circleHeight;
 @property (readonly, nonatomic) CGFloat circleWidth;
 
@@ -77,7 +77,7 @@
 
 #pragma mark * readonly
 
-- (CGFloat)gapValue {
+- (CGFloat)gap {
     return 10.0f;
 }
 
@@ -123,7 +123,7 @@
             CGFloat mainValue = MIN(pageHalfWidth, (pageOffset * 2.5));
             CGFloat flexibleWidth = (self.circleWidth * (mainValue / pageHalfWidth));
             
-            // circleWidth + flexibleWidth(max) = circleWidth + self.gapValue
+            // circleWidth + flexibleWidth(max) = circleWidth + self.gap
             animateCircleFrame.size.width = self.circleWidth + flexibleWidth;
             
             // modify circle backgroundColor
@@ -133,7 +133,7 @@
         else {
             CGFloat mainValue = MIN(pageHalfWidth, ((pageOffset - pageHalfWidth)));
             CGFloat flexibleWidth = (self.circleWidth * (mainValue / pageHalfWidth));
-            CGFloat animateCircleMaxWidth = (self.circleWidth + self.gapValue);
+            CGFloat animateCircleMaxWidth = (self.circleWidth + self.gap);
             animateCircleFrame.size.width = animateCircleMaxWidth - flexibleWidth;
             
             // modify circle backgroundColor
@@ -142,7 +142,7 @@
         }
         
         // modify animateCircle x
-        CGFloat nextCircleX = (self.circleWidth + self.gapValue);
+        CGFloat nextCircleX = (self.circleWidth + self.gap);
         CGFloat flexibleX = (nextCircleX / pageWidth) * scrollView.contentOffset.x;
         animateCircleFrame.origin.x = flexibleX;
         self.animateCircle.frame = animateCircleFrame;
@@ -168,7 +168,7 @@
     [self setupFrame];
     
     for (NSInteger index = 0; index < self.pageCount; index++) {
-        CGFloat x = (self.circleHeight * index) + (index * self.gapValue);
+        CGFloat x = (self.circleHeight * index) + (index * self.gap);
         UIView *circle = [[UIView alloc] initWithFrame:CGRectMake(x, 0, self.circleHeight, self.circleHeight)];
         circle.backgroundColor = self.selectedColor;
         circle.layer.cornerRadius = self.circleHeight / 2.0f;
@@ -185,7 +185,7 @@
 - (void)setupFrame {
     CGRect newFrame = self.frame;
     newFrame.size.height = self.circleHeight;
-    newFrame.size.width = (self.pageCount * self.circleHeight) + ((self.pageCount - 1) * self.gapValue);
+    newFrame.size.width = (self.pageCount * self.circleHeight) + ((self.pageCount - 1) * self.gap);
     self.frame = newFrame;
 }
 
