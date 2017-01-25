@@ -14,6 +14,7 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
 @property (nonatomic, strong) JAPageControl *jaPageControl;
+@property (nonatomic, strong) NSInteger pages;
 
 @end
 
@@ -31,12 +32,15 @@
 
 #pragma mark * init values
 
+- (void)setupInitValues {
+    self.pages = 10;
+}
+
 - (void)setupScrollViews {
-    NSInteger pages = 10;
     CGFloat screenWidth = CGRectGetWidth([UIScreen mainScreen].bounds);
-    self.scrollView.contentSize = CGSizeMake(pages * screenWidth, 0);
+    self.scrollView.contentSize = CGSizeMake(self.pages * screenWidth, 0);
     
-    for (int pageIndex = 0; pageIndex < pages; pageIndex++) {
+    for (int pageIndex = 0; pageIndex < self.pages; pageIndex++) {
         CGFloat height = CGRectGetHeight(self.scrollView.bounds);
         UIView *pageView = [[UIView alloc] initWithFrame:CGRectMake(pageIndex * screenWidth, 0, screenWidth, height)];
         pageView.backgroundColor = [UIColor colorWithRed:(arc4random() % 255)/255.0 green:(arc4random() % 255)/255.0 blue:(arc4random() % 255)/255.0 alpha:1.0];
@@ -45,10 +49,9 @@
 }
 
 - (void)setupJAPageControls {
-    NSInteger pageCount = 5;
     self.jaPageControl = [[JAPageControl alloc] init];
     self.jaPageControl.scrollView = self.scrollView;
-    self.jaPageControl.pageCount = pageCount;
+    self.jaPageControl.pageCount = self.pages;
 //    self.jaPageControl.selectedColor = [UIColor redColor];
 //    self.jaPageControl.unSelectedColor = [UIColor blueColor];
     
@@ -62,6 +65,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self setupInitValues];
     [self setupScrollViews];
     [self setupJAPageControls];
 }
