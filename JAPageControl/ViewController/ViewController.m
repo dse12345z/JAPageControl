@@ -14,7 +14,7 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
 @property (nonatomic, strong) JAPageControl *jaPageControl;
-@property (nonatomic, strong) NSInteger pages;
+@property (nonatomic, assign) NSInteger pages;
 
 @end
 
