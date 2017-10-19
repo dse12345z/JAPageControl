@@ -14,8 +14,16 @@
 
 @property (strong, nonatomic) UIColor *unSelectedColor;
 
-@property (assign, nonatomic) NSInteger pageCount;
+@property (assign, nonatomic) NSInteger currentPage;
+
+@property (assign, nonatomic) NSInteger pages;
+
+@property (assign, nonatomic) CGFloat gap;
+
+@property (assign, nonatomic) CGFloat width;
 
 @property (weak, nonatomic) UIScrollView *scrollView;
+
+- (void)update;
 
 @end

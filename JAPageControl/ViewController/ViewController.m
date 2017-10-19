@@ -51,14 +51,15 @@
 - (void)setupJAPageControls {
     self.jaPageControl = [[JAPageControl alloc] init];
     self.jaPageControl.scrollView = self.scrollView;
-    self.jaPageControl.pageCount = self.pages;
-//    self.jaPageControl.selectedColor = [UIColor redColor];
-//    self.jaPageControl.unSelectedColor = [UIColor blueColor];
+    self.jaPageControl.pages = self.pages;
+    self.jaPageControl.currentPage = 2;
+    [self.jaPageControl update];
     
     CGFloat x = CGRectGetWidth([UIScreen mainScreen].bounds) * 0.5;
     CGFloat y = CGRectGetHeight(self.scrollView.bounds) - 20;
     self.jaPageControl.center = CGPointMake(x, y);
     [self.view addSubview:self.jaPageControl];
+    
 }
 
 #pragma mark - life cycle
